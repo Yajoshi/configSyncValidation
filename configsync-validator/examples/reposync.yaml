@@ -1,0 +1,12 @@
+apiVersion: configsync.gke.io/v1beta1
+kind: RepoSync
+metadata:
+  name: repo-sync
+  namespace: team-a
+spec:
+  sourceFormat: unstructured
+  git:
+    repo: https://github.com/example-org/team-a-repo
+    branch: main
+    dir: apps
+    auth: none

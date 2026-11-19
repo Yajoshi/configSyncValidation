@@ -1,0 +1,37 @@
+# Example configuration. Run with:
+#   configsync-validator -config examples/config.yaml
+#
+# Relative paths are resolved against the directory of this file.
+# Any command-line flag overrides the value set here.
+
+# kubeconfig: ~/.kube/config     # default: KUBECONFIG, then ~/.kube/config, then in-cluster
+# context: my-cluster
+
+pollInterval: 5s
+timeout: 10m            # per sync object (wait for convergence plus ResourceGroup validation)
+errorThreshold: 3       # consecutive polls reporting an error before FAILED
+
+fieldManager: configsync-validator
+forceConflicts: false
+
+skipResourceGroupValidation: false
+allowEmptyResourceGroup: false
+
+rootSync:
+  manifest: rootsync.yaml          # applied first
+  # resourceGroupName: root-sync   # only if the ResourceGroup is not named like the RootSync
+  # expectedCommit: 1a2b3c4d       # wait until this commit is synced
+
+repoSync:
+  manifest: reposync.yaml          # applied only after the RootSync succeeds
+  # resourceGroupName: repo-sync
+  # expectedCommit: 5e6f7a8b
+
+# Status-only mode: leave out "manifest" and give a name instead, and nothing
+# is applied; the existing object is just checked.
+#
+# rootSync:
+#   name: root-sync
+# repoSync:
+#   name: repo-sync
+#   namespace: team-a
